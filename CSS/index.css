@@ -1,95 +1,47 @@
-        /* 博客头部 */
-        .Nb{
-            padding: 0px;
-            margin: 0px;
-            height: 100px;
-            width: auto;
-            border: 2px solid rgb(204,229,255);
-            background-color: rgb(153,204,255);
-        }
-        
-        /* 博客背景 */
-        body{
-            background-color: rgb(255, 247, 205);
-            margin: 0px;
-            padding: 0px;
-        }
+/* 博客头部 */
+.Nb{
+    padding: 0px;
+    margin: 0px;
+    height: 100px;
+    width: auto;
+    border: 2px solid rgb(204,229,255);
+    background-color: rgb(153,204,255);
+}
 
-        /* 导航栏 */
-        .float_menu ul li:hover{
-            background-color: rgb(255, 153, 153);
-            color: white;
-            cursor: pointer;
-        }
-        .float_menu{
-            overflow: hidden;
-            width: 0px;
-            max-height: 0px;
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            transition: all 0.3s ease;
-        }
-        .dhl_button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-        }
-        #toggle{
-            display: none;
-        }
-        #toggle:checked ~ .float_menu{
-            width: 200px;
-            max-height: 500px;
-            border: solid 2px rgb(255, 153, 153);
-            background-color: rgb(255, 204, 204);
-            border-radius: 20px;
-        }
-
-        /* 博客标题 */
-        .bt {
-            font-size: 35px;
-            text-align: left;
-            animation: Bt 8s infinite alternate ease-in-out;
-            display: inline-block;
-        }
-        @keyframes Bt
-        {
-            0% {color: red;}
-            16% {color: orange;}
-            32% {color: yellow;}
-            48% {color: green;}
-            54% {color: aqua;}
-            80% {color: blue;}
-            96% {color: purple;}
-        }
-        .bt:hover {
-            cursor: default;
-        }
-        .bt:hover ~.intro {
-            width: 200px;
-            max-height: 500px;
-            background-color: cornflowerblue;
-            border-radius: 20px;
-            border: 2px solid cyan;
-            text-align: center;
-            position: absolute;
-            top: 100px;
-            left: 100px;
-        }
-        .intro {
-            width: 0px;
-            max-height: 0px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        /* 博客内容 */
-        .Content {
-            margin: 10px auto;
-            padding: 1.25%;
-            width: 70%;
-            height: auto;
-            background-color: rgb(229, 255, 204);
-        }
+/* 博客标题 */
+.bt {
+    font-size: 35px;
+    text-align: left;
+    animation: Bt 8s infinite alternate ease-in-out;
+    display: inline-block;
+}
+@keyframes Bt
+{
+    0% {color: red;}
+    16% {color: orange;}
+    32% {color: yellow;}
+    48% {color: green;}
+    54% {color: aqua;}
+    80% {color: blue;}
+    96% {color: purple;}
+}
+.bt:hover {
+    cursor: default;
+}
+.bt:hover ~.intro {
+    width: 200px;
+    max-height: 500px;
+    background-color: cornflowerblue;
+    border-radius: 20px;
+    border: 2px solid cyan;
+    text-align: center;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+.intro {
+    width: 0px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}

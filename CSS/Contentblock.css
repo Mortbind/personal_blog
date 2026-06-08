@@ -1,0 +1,27 @@
+/* 在主页显示的内容块 */
+.Contentblock {
+    margin: 10px auto;
+    background-color: white;
+    height: 200px;
+    width: 50%;
+    border: 2px solid rgb(153,204,255);;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* 块中的元素 */
+.Content {
+    margin: 60px;
+    font-size: 50px;
+    transition: all 0.3s ease;
+}
+
+.Contentblock:hover {
+    .Content {
+    margin: 100px;
+    }
+    height:300px;
+    width: 60%;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+}

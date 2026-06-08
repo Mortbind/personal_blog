@@ -1,0 +1,36 @@
+/* 导航栏 */
+.float_menu ul li:hover{
+    background-color: rgb(255, 153, 153);
+    color: white;
+    cursor: pointer;
+}
+.float_menu{
+    overflow: hidden;
+    width: 0px;
+    max-height: 0px;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    transition: all 0.3s ease;
+}
+.dhl_button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+}
+#toggle{
+    display: none;
+}
+#toggle:checked ~ .float_menu{
+    width: 200px;
+    max-height: 500px;
+    border: solid 2px rgb(255, 153, 153);
+    background-color: rgb(255, 204, 204);
+    border-radius: 20px;
+}
+/* 超链接设置 */
+a {
+    text-decoration: none;
+    color: black;
+}
