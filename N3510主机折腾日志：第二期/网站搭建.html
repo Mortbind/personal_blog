@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/Navigationbar.css",type="text/css">
+    <link rel="stylesheet" href="../CSS/Background.css" type="text/css">
+    <link rel="stylesheet" href="../CSS/Content.css" type="text/css">
+    <title>网站搭建教程</title>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <div class="DHL">
+        <label for="toggle" style="cursor: pointer;" class="dhl_button">☰</label>
+        <input type="checkbox"id="toggle">
+        <div class="float_menu">
+            <ul>
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../about.html">关于</a></li>
+                <li><a href="javascript:alert('联系邮箱：3861242913@qq.com');">联系</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 博客内容 -->
+    <div class="Content">
+        <div>
+            <h1 style="text-align: center;">N3510主机折腾日志：第二期の网站搭建</h1>
+            <p style="text-indent: 2em;">前言：我Mortbind一直想要一个属于自己的网站，于是在暑假的时候我购买了一个自己的域名www.mortbind.xyz,当时以为可以很快就可以在N3150上搭建完成，结果发现没有公网ip，如果使用自己路由器的公网ip又很危险，所有使用了cf(全称：Cloudflare)的内网穿透来进行搭建，过程花了很多时间，但同时也学到很多，所有欣赏我的成功吧qwq！</p>
+            <br>
+            <h2 style="text-align: center;">以下就是我的搭建过程，有点乏味，毕竟是教程类，请见谅（欸嘿:D）</h2>
+            <br>
+            <h2>准备工作：一台linux系统的计算机、一个域名,接下来我们将进行以下步骤来搭建网站</h2>
+            <ol>
+                <li>在linux中安装1panel</li>
+                <li>启动1panel面板，安装openresty</li>
+                <li>设置Cloudflare和OpenResty -> 将域名托管至Cloudflare 的DNS上，然后用内网穿透技术让其与内网主机连接上域名来进行访问</li>
+            </ol>
+
+            <h3>一、在linux中安装1pane</h3>
+            <ol>
+                <li>准备一台Linux系统的电脑（新手推荐用ubuntu，这里我用的是debian13）</li>
+                <li>运用SSH连接linux电脑（这步是用一台windows主机连接linux主机好输入命令，我用的ssh连接工具是MobaXterm）</li>
+            </ol>
+            <p>(1) 这里具体先打开软件</p>
+            <p> <img src="img/1.png" alt="1" width="60%"> </p>
+            <p>(2) 点击会话按钮</p>
+            <p> <img src="img/2.png" alt="2" width="60%"> </p>
+            <p>(3) 点击SSH,并填写ip地址和用户名，点击确认</p>
+            <p> <img src="img/3.png" alt="3" width="60%"> </p>
+            <p>(4)然后就可以利用SSH连接主机了</p>
+            <p> <img src="img/4.png" alt="4" width="60%"> </p>
+            <p>(5)接下来，我们安装1panel，访问1panel官网<a href="https://1panel.cn/" target="_blank">https://1panel.cn</a>然后点击[免费安装]</p>
+            <p> <img src="img/5.png" alt="5" width="60%"> </p>
+            <p> <img src="img/6.png" alt="6" width="60%"> </p>
+            <p>(6)将安装代码复制输入终端</p>
+            <p> <img src="img/7.png" alt="7" width="60%"> </p>
+            <p>tips:运行代码需要使用su进入root用户，这里显示我们curl这个命令没有安装，我们用apt install curl进行安装，先使用apt-get update && apt-get upgrade 来更新一下系统，以确保系统是最新的，在使用curl安装命令，最后使用1panel安装命令</p>
+            <p> <img src="img/8.png" alt="8" width="60%"> </p>
+            <p> <img src="img/9.png" alt="9" width="60%"> </p>
+            <p>这边我们选择2中文</p>
+            <p> <img src="img/10.png" alt="10" width="60%"> </p>
+            <p>这边我们第一个选择默认，然后安装docker选择y,然后之后一键回车，直到要求输入用户名和密码，这里自己输入</p>
+            <p> <img src="img/11.png" alt="11" width="60%"> </p>
+            <p>tips:如果出现docker安装错误，这个一般是由于网络的问题，我们直接用清华园镜像进行安装，具体命令可以问问AI</p>
+            <p> <img src="img/12.png" alt="12" width="60%"> </p>
+            <p>这里提示记住安装后的输出，最好保存一下，这是后将内部地址复制粘贴到浏览器，我们登录1panel面板</p>
+            <p> <img src="img/13.png" alt="13" width="60%"> </p>
+            <p>这里选择右边应用OpenResty点击安装,这时候你会发现，安装很慢，这时候我们就需要借助镜像源了</p>
+            <p> <img src="img/14.png" alt="14" width="60%"> </p>
+            <p>点击旁边竖下来的容器，在点击横轴的配置,在镜像加速点击设置，镜像可以去 <a href="https://status.anye.xyz/" target="_blank">https://status.anye.xyz/</a> 来选择，之后在安装就很快成功了</p>
+            <p> <img src="img/15.png" alt="15" width="60%"> </p>
+            <p>就此1panal和openresty安装完成，接下来，我们要进行cf设置了</p>
+            <br>
+            
+            <h3>二、Cloudflare设置</h3>
+            <p>由于cloudflare布局改变了很多，以此有很多教程基本都废了这里讲一下2026年8月10日时cloudflare的配置</p>
+            <p>(1)将域名托管至cloudflare，设置DNS</p>
+            <p> <img src="img/16.png" alt="16" width="60%"> </p>
+            <p>浏览器输入Cloudflare网址 <a href="https://www.cloudflare.com/" target="_blank">https://www.cloudflare.com/</a> ，点击右上角登录，没有去注册一个(不难)</p>
+            <p>(2)托管域名</p>
+            <p> <img src="img/17.png" alt="17" width="60%"> </p>
+            <p>登录之后会来到这个页面,我们点击左边的域名</p>
+            <p> <img src="img/18.png" alt="18" width="60%"> </p>
+            <p>在点击概述，来到以下界面</p>
+            <p> <img src="img/19.png" alt="19" width="60%"> </p>
+            <p>点击右上角添加域，来到下面的界面</p>
+            <p> <img src="img/20.png" alt="20" width="60%"> </p>
+            <p>由于我们已有域名，直接点连接域名,然后输入自己的域名如我的bcodeath.dpdns.org，然后点击右下角下一步</p>
+            <p> <img src="img/21.png" alt="21" width="60%"> </p>
+            <p>来到这个界面</p>
+            <p> <img src="img/22.png" alt="22" width="60%"> </p>
+            <p>选择第一个免费的，来到这个界面</p>
+            <p> <img src="img/23.png" alt="23" width="60%"> </p>
+            <p>由于我们时内网穿透，因此现在不用添加DNS记录后续添加，我们现在做的是将域名托管到cf上，所以直接点击下一步【继续激活】</p>
+            <p> <img src="img/24.png" alt="24" width="60%"> </p>
+            <p>这里将"添加你分配的每个Cloudflare名称服务器"这里的两个服务器分别复制粘贴到你域名的名称服务器上，然后点击下一步，需要注意的是要过一会才会让名称服务器生效</p>
+            <p> <img src="img/25.png" alt="25" width="60%"> </p>
+            <p> <img src="img/26.png" alt="26" width="60%"> </p>
+            <p>出现上述两张图片代表托管成功了，接下来我们进行内网穿透，通过cf的隧道技术来让域名连接上我们的linux主机</p>
+            <br>
+            <p>(3)cf隧道内网穿透</p>
+            <p>回到主界面，点击左下角的人脉网络</p>
+            <p> <img src="img/27.png" alt="27" width="60%"> </p>
+            <p> <img src="img/28.png" alt="28" width="60%"> </p>
+            <p> <img src="img/29.png" alt="29" width="60%"> </p>
+            <p>点击中间的创建隧道</p>
+            <p> <img src="img/30.png" alt="30" width="60%"> </p>
+            <p>随便输入一个隧道名称，下一步</p>
+            <p> <img src="img/31.png" alt="31" width="60%"> </p>
+            <p>这里根据操作系统选择，如果没有自己的系统可以选择docker安装</p>
+            <p> <img src="img/32.png" alt="32" width="60%"> </p>
+            <p>这里一一复制一二代码，第三行不用管，然后粘贴到自己的终端中</p>
+            <p> <img src="img/33.png" alt="33" width="60%"> </p>
+            <p> <img src="img/34.png" alt="34" width="60%"> </p>
+            <p>出现隧道已成功连接代表完成，点击继续</p>
+            <p> <img src="img/35.png" alt="35" width="60%"> </p>
+            <p>这时候就要设置DNS了，我们点击创建好的隧道右边的三个点，点击配置</p>
+            <p> <img src="img/36.png" alt="36" width="60%"> </p>
+            <p>在下面添加线路</p>
+            <p> <img src="img/37.png" alt="37" width="60%"> </p>
+            <p>这里点击已发布的申请，按如下填写，不要更改领域</p>
+            <p> <img src="img/38.png" alt="38" width="60%"> </p>
+            <p>然后点击添加路线，这时候Cf设置全部完成，继续最后一步</p>
+            <br>
+
+            <h3>三、OpenResty网站创建</h3>
+            <p>登录1panel，创建网站，由于我们的网站没有复杂的前端后端代码，所以选择静态网站</p>
+            <p> <img src="img/39.png" alt="39" width="60%"> </p>
+            <p>点击创建</p>
+            <p> <img src="img/40.png" alt="40" width="60%"> </p>
+            <p>点击静态网站，输入域名，勾选ipv6监听</p>
+            <p> <img src="img/41.png" alt="41" width="60%"> </p>
+            <p>点击确认，等待一会，然后访问域名，会出现下面界面代表安装正确，至此恭喜你安装成功！你真的很强:P</p>
+            <p> <img src="img/42.png" alt="42" width="60%"> </p>
+            <br>
+
+        </div>
+        <div>
+            <p style="text-indent: 2em;">最后请原谅我，我这个教程其实挺不负责的，因为有很多东西没有介绍(因为这些东西触犯了我的知识盲区)，在下真的很抱歉，尤其是最后OpenResty网站创建，这里最后老是会出现你直接访问域名会出现404错误，这个原因我排查了很久，实属我的能力有限导致我找不出来这个问题，还是通过ai分析出来的，但ai的解决方法还有些苛刻，需要复制粘贴很多代码，而且试错率很高，没有一下解决，要不断喂给ai，真的有些崩溃，最后还请你原谅我的过失，如果未来有能力，我会立刻填补这份缺失的，谢谢你的理解！</p>
+            <br>
+            <p style="text-indent: 2em;">后记：这篇教程其实在8月份多就已经写完了但html网页迟迟没写，但今天9月3日我一口气写完了，虽然有点滥竽充数，但我还是挺自豪的，最近我慢慢感觉我对计算机的兴趣减少了，不知道为什么，应该是明年快要高考了吧，现在的我很拖拉，我不知道为什么我现在很难集中精神，每天处于焦虑中，因此我不断的在刷手机，我知道这样不行，但不刷心里空空的，其实应该是没有完全放弃这些我感兴趣的研究吧，但我真的很烦，我讨厌这种教育让我放弃了我感兴趣的学习机会，唉说了这么多，其实都是抱怨，如果你也有这些烦恼，害怕自己不行，兴趣减少，每天躺平刷手机，我只想说，你不孤单，很多人都一样，也许未来的某一天我们终将成为璀璨的星星！也许是明天，还是后天，还是今天，但总有一天！最后想说辛苦了！请你继续怀揣着你的梦想前进！</p>
+            <br>
+            <div style="text-align: center;"><h1>N3510主机折腾日志：第二期 完</h1></div>
+        </div>
+    </div>
+</body>
+</html>
