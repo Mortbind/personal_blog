@@ -19,9 +19,11 @@
     right: 20px;
     font-size: 30px;
 }
+
 #toggle{
     display: none;
 }
+
 #toggle:checked ~ .float_menu{
     width: 200px;
     max-height: 500px;
@@ -29,6 +31,7 @@
     background-color: rgb(255, 204, 204);
     border-radius: 20px;
 }
+
 /* 超链接设置 */
 a {
     text-decoration: none;
